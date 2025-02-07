@@ -1,10 +1,14 @@
 const Product = require("../models/Product");
 
-// Add Product
 exports.addProduct = async (req, res) => {
   const { name, price, description } = req.body;
   try {
-    const product = new Product({ name, price, description, vendor: req.user.id });
+    const product = new Product({
+      name,
+      price,
+      description,
+      vendor: req.user.id, // Add the vendor's ID from the authenticated user
+    });
     await product.save();
     res.status(201).json(product);
   } catch (err) {
@@ -21,3 +25,5 @@ exports.getProducts = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+
