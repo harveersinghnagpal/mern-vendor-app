@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import api from "../services/api";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 const Login = () => {
@@ -10,20 +10,36 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const res = await api.post("/auth/login", { email, password });
+      const res = await axios.post("/api/auth/login", { email, password });
       localStorage.setItem("token", res.data.token);
-      navigate("/");
+      navigate("/dashboard"); // Redirect to Dashboard after login
     } catch (err) {
       console.error(err);
+      alert("Failed to log in");
     }
   };
 
   return (
-    <form onSubmit={handleLogin}>
-      <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-      <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      <button type="submit">Login</button>
-    </form>
+    <div>
+      <h1>Login</h1>
+      <form onSubmit={handleLogin}>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <button type="submit">Login</button>
+      </form>
+    </div>
   );
 };
 

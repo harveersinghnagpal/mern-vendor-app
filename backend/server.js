@@ -26,7 +26,8 @@ const authRoutes = require("./routes/authRoutes");
 const productRoutes = require("./routes/productRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const qrRoutes = require("./routes/qrRoutes");
-
+const salesRoutes = require("./routes/salesRoutes");
+app.use("/api/orders", salesRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
