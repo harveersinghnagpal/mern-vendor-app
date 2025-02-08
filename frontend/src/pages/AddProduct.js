@@ -13,7 +13,7 @@ const AddProduct = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem('token');
-      const vendorId = localStorage.getItem('vendorId'); // Fetch vendor ID
+      // Fetch vendor ID
       
       // Add the product
       await axios.post(
@@ -26,7 +26,7 @@ const AddProduct = () => {
         }
       );
       alert('Product added successfully!');
-      navigate(`/menu/${vendorId}`); // Use backticks for string interpolation
+      navigate(`/dashboard`); // Use backticks for string interpolation
     } catch (err) {
       console.error(err);
       alert('Failed to add product');

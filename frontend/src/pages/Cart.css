@@ -1,0 +1,131 @@
+/* Cart Container */
+.cart-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  /* Cart Title */
+  .cart-title {
+    text-align: center;
+    font-size: 2rem;
+    color: #2c3e50;
+    margin-bottom: 20px;
+  }
+  
+  /* Empty Cart Message */
+  .empty-cart-message {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #95a5a6;
+  }
+  
+  /* Cart Items */
+  .cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  /* Cart Item */
+  .cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .cart-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Item Details */
+  .item-details {
+    flex: 1;
+  }
+  
+  .item-name {
+    font-size: 1.2rem;
+    color: #34495e;
+    margin-bottom: 5px;
+  }
+  
+  .item-price {
+    font-size: 1rem;
+    color: #7f8c8d;
+    margin-bottom: 5px;
+  }
+  
+  .item-total {
+    font-size: 1rem;
+    color: #27ae60;
+    font-weight: 600;
+  }
+  
+  /* Remove Item Button */
+  .remove-item-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .remove-item-btn:hover {
+    background-color: #c0392b;
+  }
+  
+  .trash-icon {
+    font-size: 1rem;
+  }
+  
+  /* Cart Summary */
+  .cart-summary {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: right;
+  }
+  
+  .total-amount {
+    font-size: 1.5rem;
+    color: #2c3e50;
+    margin-bottom: 15px;
+  }
+  
+  /* Place Order Button */
+  .place-order-btn {
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: #27ae60;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .place-order-btn:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+  }
+  
+  .place-order-btn:hover:not(:disabled) {
+    background-color: #219653;
+  }
