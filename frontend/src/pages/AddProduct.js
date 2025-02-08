@@ -52,6 +52,7 @@ const AddProduct = () => {
             type="number"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
+            min="0"
             required
           />
         </div>
