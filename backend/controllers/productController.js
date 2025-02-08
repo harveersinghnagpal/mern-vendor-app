@@ -27,9 +27,21 @@ exports.addProduct = async (req, res) => {
 // Get Products
 exports.getProducts = async (req, res) => {
   try {
-    const products = await Product.find({ vendor: req.user.id });
+    const { vendorId } = req.query;
+
+    if (!vendorId) {
+      return res.status(400).json({ error: "Vendor ID is required" });
+    }
+
+    const products = await Product.find({ vendor: vendorId });
+
+    if (!products.length) {
+      return res.status(404).json({ error: "No products found for this vendor" });
+    }
+
     res.status(200).json(products);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
+
