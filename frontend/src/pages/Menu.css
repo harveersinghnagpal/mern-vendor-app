@@ -1,0 +1,20 @@
+.cart-button-container {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .go-to-cart-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    background-color: #ff9800;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .go-to-cart-btn:hover {
+    background-color: #e68900;
+  }
+  

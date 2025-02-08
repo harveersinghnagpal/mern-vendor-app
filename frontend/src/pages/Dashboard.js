@@ -79,24 +79,7 @@ const Dashboard = () => {
     fetchData();
   }, [vendorId]);
 
-  const handleDeleteProduct = async (productId) => {
-    try {
-      const token = localStorage.getItem('token');
-      if (!token) throw new Error('No authentication token found');
-
-      await axios.delete(`/api/products/${productId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      setProducts((prevProducts) =>
-        prevProducts.filter((product) => product._id !== productId)
-      );
-      alert('Product deleted successfully');
-    } catch (err) {
-      console.error('Error deleting product:', err.response?.data || err);
-      alert('Failed to delete product');
-    }
-  };
+  
 
   return (
     <div className="dashboard-container">
@@ -125,26 +108,24 @@ const Dashboard = () => {
             <tr>
               <th>Product Name</th>
               <th>Price</th>
-              <th>Items Sold</th>
-              <th>Actions</th>
+              <th>quantity</th>
+              <th>Revenue Generated</th>
             </tr>
           </thead>
           <tbody>
             {products.map((product) => (
               <tr key={product._id}>
                 <td>{product.name}</td>
-                <td>${product.price}</td>
-                <td>{product.itemsSold || 0}</td>
+                <td>Rs.{product.price}</td>
+                <td>{product.quantity || 0}</td>
                 <td>
-                  <button onClick={() => handleDeleteProduct(product._id)} className="delete-btn">
-                    Delete
-                  </button>
+                  {product.price * (product.quantity || 0)}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
-        <h3>Total Sales: ${totalSales}</h3>
+        <h3>Total Sales: Rs.{totalSales}</h3>
       </div>
     </div>
   );

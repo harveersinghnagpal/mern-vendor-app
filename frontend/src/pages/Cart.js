@@ -10,28 +10,53 @@ const Cart = () => {
     const totalAmount = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const customerName = prompt("Enter your name:");
     const customerContact = prompt("Enter your contact number:");
-    const vendorId = cart.length > 0 ? cart[0].vendorId : null;
-
+    const vendorId = cart.length > 0 && cart[0].vendor ? cart[0].vendor : null;
+  
     if (!customerName || !customerContact) {
       alert("Please enter all details.");
       return;
     }
-
+  
+    if (!vendorId) {
+      alert("Error: Vendor ID is missing.");
+      console.error("Order Failed: Vendor ID is missing.");
+      return;
+    }
+  
     try {
-      await axios.post("/api/orders/create", {
-        items: cart.map((item) => ({ product: item._id, quantity: item.quantity })),
-        totalAmount,
-        customerName,
-        customerContact,
-        vendorId,
-      });
+      const token = localStorage.getItem("token"); // ✅ Fetch token
+      if (!token) {
+        alert("You are not logged in. Please log in to place an order.");
+        console.error("No authentication token found.");
+        return;
+      }
+  
+      const response = await axios.post(
+        "/api/orders/create",
+        {
+          items: cart.map((item) => ({
+            product: item._id,
+            quantity: item.quantity,
+          })),
+          totalAmount,
+          customerName,
+          customerContact,
+          vendorId,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` }, // ✅ Include token
+        }
+      );
+  
       alert("Order placed successfully!");
-      navigate("/menu");
+      console.log("Order Response:", response.data);
+      navigate("/Dashboard");
     } catch (error) {
-      console.error("Error placing order:", error);
-      alert("Order failed.");
+      console.error("Error placing order:", error.response?.data || error);
+      alert("Order failed. Check console for details.");
     }
   };
+  
 
   return (
     <div className="cart-container">

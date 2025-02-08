@@ -20,8 +20,26 @@ export const CartProvider = ({ children }) => {
     console.log("Cart Updated:", cart); // ✅ Debugging
   };
 
+  const removeFromCart = (productId) => {
+    setCart((prevCart) => {
+      const existingItem = prevCart.find((item) => item._id === productId);
+      if (existingItem) {
+        if (existingItem.quantity > 1) {
+          return prevCart.map((item) =>
+            item._id === productId ? { ...item, quantity: item.quantity - 1 } : item
+          );
+        } else {
+          return prevCart.filter((item) => item._id !== productId);
+        }
+      }
+      return prevCart;
+    });
+
+    console.log("Cart Updated:", cart); // ✅ Debugging
+  };
+
   return (
-    <CartContext.Provider value={{ cart, addToCart }}>
+    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
       {children}
     </CartContext.Provider>
   );
