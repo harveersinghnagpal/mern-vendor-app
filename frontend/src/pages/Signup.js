@@ -89,6 +89,10 @@ const Signup = () => {
 
       <style jsx>{`
         /* Navbar Styling */
+        body{
+        margin: 0;
+        padding: 0;
+        }
         .navbar {
           background-color: #3182ce;
           padding: 10px 20px;

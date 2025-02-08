@@ -1,87 +1,72 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useCart } from "../context/CartContext";
+import axios from "axios";
 
 const Menu = () => {
-  const { vendorId } = useParams(); // Get vendorId from URL params
+  const { vendorId } = useParams();
   const [products, setProducts] = useState([]);
-  const [cart, setCart] = useState([]);
+  const { addToCart } = useCart();
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const token = localStorage.getItem("token"); // Get token for authentication
-        const res = await axios.get(`/api/products?vendor=${vendorId}`, {
-          headers: { Authorization: `Bearer ${token}` },
+        console.log("Vendor ID from URL:", vendorId); // ✅ Debugging
+
+        if (!vendorId) {
+          console.error("No vendor ID found in URL.");
+          return;
+        }
+
+        const token = localStorage.getItem("token");  // ✅ Fetch token
+        if (!token) {
+          console.error("No authentication token found.");
+          return;
+        }
+
+        const response = await axios.get(`/api/products/gotomenu?vendorId=${vendorId}`, {
+          headers: { Authorization: `Bearer ${token}` }, // ✅ Send token
         });
-        setProducts(res.data);
-      } catch (err) {
-        console.error("Error fetching products:", err);
+
+        console.log("Fetched Products:", response.data);
+        setProducts(response.data);
+      } catch (error) {
+        console.error("Error fetching products:", error.response?.data || error);
       }
     };
+
     fetchProducts();
   }, [vendorId]);
 
-  const addToCart = (product) => {
-    setCart([...cart, product]);
-  };
-
-  const placeOrder = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const order = {
-        items: cart.map((product) => ({
-          product: product._id,
-          quantity: 1,
-        })),
-        totalAmount: cart.reduce((total, product) => total + product.price, 0),
-        customerName: "Customer Name",
-        customerContact: "1234567890",
-        vendor: vendorId,
-      };
-      await axios.post("/api/orders/create", order, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      alert("Order placed successfully!");
-      setCart([]);
-    } catch (err) {
-      console.error("Error placing order:", err);
-      alert("Failed to place order");
-    }
-  };
-
   return (
-    <div>
-      <h1>Menu</h1>
-      {products.length > 0 ? (
-        <ul>
-          {products.map((product) => (
-            <li key={product._id}>
+    <div className="menu-container">
+      <h2>Vendor Menu</h2>
+      <div className="product-grid">
+        {products.length > 0 ? (
+          products.map((product) => (
+            <div className="product-card" key={product._id}>
               <h3>{product.name}</h3>
-              <p>Price: ${product.price}</p>
-              <p>{product.description}</p>
-              <button onClick={() => addToCart(product)}>Add to Cart</button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No products found.</p>
-      )}
-      <h2>Cart</h2>
-      {cart.length > 0 ? (
-        <ul>
-          {cart.map((product) => (
-            <li key={product._id}>
-              <h3>{product.name}</h3>
-              <p>Price: ${product.price}</p>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>Your cart is empty.</p>
-      )}
-      <button onClick={placeOrder}>Place Order</button>
+              <p>Price: ₹{product.price}</p>
+              <p>
+                Description: {product.description || "No description available"}
+              </p>
+              <button
+                onClick={() => {
+                  console.log("Adding to Cart:", product); // ✅ Debugging
+                  addToCart(product);
+                }}
+              >
+                Add to Cart
+              </button>
+            </div>
+          ))
+        ) : (
+          <p>No products available.</p>
+        )}
+      </div>
+      
     </div>
+    
   );
 };
 
