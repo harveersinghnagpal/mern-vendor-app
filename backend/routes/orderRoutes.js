@@ -4,7 +4,8 @@ const authMiddleware = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-router.post("/create", createOrder);
-router.get("/", authMiddleware, getOrders);
+router.post("/create", authMiddleware, createOrder);
+
+router.get("/getorder", authMiddleware, getOrders);
 
 module.exports = router;

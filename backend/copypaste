@@ -1,0 +1,32 @@
+{
+  "name": "sandwich",
+  "price": "200",
+  "description":"eatable"
+}
+
+{
+    "name":"abcdef",
+    "email":"sum2@gmail.com",
+    "password":"123456789"
+}
+
+{
+  "items": [
+    {
+      "product": "67a7727d47dfce43786a22f4",
+      "quantity": 2
+    },
+    {
+      "product": "67a7729747dfce43786a22f7",
+      "quantity": 1
+    }
+  ],
+  "totalAmount": 750,
+  "status": "pending",
+  "customerName": "Rahul Sharma",
+  "customerContact": "+91 9876543210",
+  "vendor": "67a76ba747dfce43786a22eb"
+}
+
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3YTc3MjNhNDdkZmNlNDM3ODZhMjJmMCIsImlhdCI6MTczOTAyNzAxNCwiZXhwIjoxNzM5MTEzNDE0fQ.cVmnnKhu_jEcfXuiYjJdTjUs2e78MjVEaBVE6nnewlE

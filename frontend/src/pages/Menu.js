@@ -3,17 +3,20 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 
 const Menu = () => {
-  const { vendorId } = useParams();
+  const { vendorId } = useParams(); // Get vendorId from URL params
   const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get(`/api/products?vendor=${vendorId}`);
+        const token = localStorage.getItem("token"); // Get token for authentication
+        const res = await axios.get(`/api/products?vendor=${vendorId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
         setProducts(res.data);
       } catch (err) {
-        console.error(err);
+        console.error("Error fetching products:", err);
       }
     };
     fetchProducts();
@@ -25,21 +28,24 @@ const Menu = () => {
 
   const placeOrder = async () => {
     try {
+      const token = localStorage.getItem("token");
       const order = {
         items: cart.map((product) => ({
           product: product._id,
-          quantity: 1, // You can add quantity functionality if needed
+          quantity: 1,
         })),
         totalAmount: cart.reduce((total, product) => total + product.price, 0),
-        customerName: "Customer Name", // Replace with actual customer name
-        customerContact: "1234567890", // Replace with actual contact info
+        customerName: "Customer Name",
+        customerContact: "1234567890",
         vendor: vendorId,
       };
-      await axios.post("/api/orders/create", order);
+      await axios.post("/api/orders/create", order, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       alert("Order placed successfully!");
-      setCart([]); // Clear the cart
+      setCart([]);
     } catch (err) {
-      console.error(err);
+      console.error("Error placing order:", err);
       alert("Failed to place order");
     }
   };

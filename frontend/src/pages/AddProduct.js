@@ -1,38 +1,42 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import './AddProduct.css'; // Import the styling
 
 const AddProduct = () => {
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState("");
-  const [description, setDescription] = useState("");
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
+  const [description, setDescription] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
+      const vendorId = localStorage.getItem('vendorId'); // Fetch vendor ID
+      
+      // Add the product
       await axios.post(
-        "/api/products/add",
-        { name, price, description },
+        '/api/products/add',
+        { name, price: parseFloat(price), description }, // Convert price to number
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}`, // Use backticks
           },
         }
       );
-      alert("Product added successfully!");
-      navigate("/dashboard"); // Redirect to the dashboard after adding the product
+      alert('Product added successfully!');
+      navigate(`/menu/${vendorId}`); // Use backticks for string interpolation
     } catch (err) {
       console.error(err);
-      alert("Failed to add product");
+      alert('Failed to add product');
     }
   };
 
   return (
-    <div>
-      <h1>Add Product</h1>
-      <form onSubmit={handleSubmit}>
+    <div className="add-product-container">
+      <form className="add-product-form" onSubmit={handleSubmit}>
+        <h1>Add Product</h1>
         <div>
           <label>Name:</label>
           <input
