@@ -7,77 +7,58 @@ const Dashboard = () => {
   const [qrCode, setQrCode] = useState("");
   const [vendorId, setVendorId] = useState("");
   const [products, setProducts] = useState([]);
-  const [totalSales, setTotalSales] = useState(0);
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  // Set base URL for axios
+  axios.defaults.baseURL = "http://localhost:5000";
+
   useEffect(() => {
-    const fetchVendor = async () => {
+    const fetchVendorAndData = async () => {
+      setLoading(true);
       try {
         const token = localStorage.getItem("token");
         if (!token) throw new Error("No authentication token found");
 
+        // Fetch vendor details
         const vendorRes = await axios.get("/api/auth/me", {
-          headers: { Authorization: `Bearer ${token}` }, // ✅ Fixed
+          headers: { Authorization: `Bearer ${token}` },
         });
         setVendorId(vendorRes.data._id);
-      } catch (err) {
-        console.error("Error fetching vendor:", err.response?.data || err);
-      }
-    };
-    fetchVendor();
-  }, []);
 
-  useEffect(() => {
-    const fetchQRCode = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) throw new Error("No authentication token found");
-
-        console.log("Fetching QR Code...");
-
-        const response = await axios.post(
+        // Fetch QR code
+        const qrRes = await axios.post(
           "/api/qr/generate",
           {},
           {
-            headers: { Authorization: `Bearer ${token}` }, // ✅ Fixed
+            headers: { Authorization: `Bearer ${token}` },
           }
         );
+        setQrCode(qrRes.data.qrCode);
 
-        console.log("QR Code Response:", response.data);
-
-        setQrCode(response.data.qrCode);
-        
-      } catch (error) {
-        console.error("Error fetching QR code:", error);
-      }
-    };
-
-    fetchQRCode();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) throw new Error("No authentication token found");
-
-        const productsRes = await axios.get(`/api/products/gotomenu?vendorId=${vendorId}`
-        , {
-          headers: { Authorization: `Bearer ${token}` }, // ✅ Fixed
-        });
+        // Fetch products
+        const productsRes = await axios.get(
+          `/api/products/gotomenu?vendorId=${vendorRes.data._id}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         setProducts(productsRes.data);
 
-        const salesRes = await axios.get(
-          `/api/orders/sales?vendor=${vendorId}`, // ✅ Fixed
-          { headers: { Authorization: `Bearer ${token}` } } // ✅ Fixed
-        );
-        setTotalSales(salesRes.data.totalSales);
+        // Fetch total sales
+        
       } catch (err) {
         console.error("Error fetching data:", err.response?.data || err);
+        setError("   ");
+      } finally {
+        setLoading(false);
       }
     };
-    if (vendorId) fetchData(); // ✅ Ensure vendorId is set before making requests
-  }, [vendorId]);
+
+    fetchVendorAndData();
+  }, []);
 
   return (
     <div className="dashboard-container">
@@ -88,6 +69,9 @@ const Dashboard = () => {
       </div>
 
       <div className="main-content">
+        {loading && <p className="loading-message">Loading...</p>}
+        {error && <p className="error-message">{error}</p>}
+
         <h2>Your QR Code</h2>
         {qrCode ? (
           <div>
@@ -104,26 +88,24 @@ const Dashboard = () => {
 
         <h2>Products and Sales</h2>
         <div className="wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>Product Name</th>
-              <th>Price</th>
-             
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((product) => (
-              <tr key={product._id}>
-                <td>{product.name}</td>
-                <td>Rs.{product.price}</td>
-                
+          <table>
+            <thead>
+              <tr>
+                <th>Product Name</th>
+                <th>Price</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {products.map((product) => (
+                <tr key={product._id}>
+                  <td>{product.name}</td>
+                  <td>Rs.{product.price}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
-        <h3>Total Sales: Rs.{totalSales}</h3>
+        
       </div>
     </div>
   );

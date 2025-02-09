@@ -1,3 +1,4 @@
+// orderController.js
 const Order = require("../models/Order");
 
 // Create Order
@@ -50,3 +51,4 @@ exports.getOrders = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+

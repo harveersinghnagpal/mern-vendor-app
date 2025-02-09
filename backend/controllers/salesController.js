@@ -4,28 +4,23 @@ const Order = require("../models/Order");
 exports.getSales = async (req, res) => {
   try {
     // If vendor ID is passed as a query param, use it, else fall back to req.user.id
-    const vendorId = req.query.vendor || req.user.id; 
-    
+    const vendorId = req.query.vendor || req.user.id;
+
     if (!vendorId) {
       return res.status(400).json({ error: "Vendor ID is required" });
     }
 
+    // Fetch all orders for the vendor
     const orders = await Order.find({ vendor: vendorId });
-    let totalSales = 0;
-    const itemsSold = {};
 
+    // Calculate total sales
+    let totalSales = 0;
     orders.forEach((order) => {
       totalSales += order.totalAmount;
-      order.items.forEach((item) => {
-        if (itemsSold[item.product]) {
-          itemsSold[item.product] += item.quantity;
-        } else {
-          itemsSold[item.product] = item.quantity;
-        }
-      });
     });
 
-    res.status(200).json({ totalSales, itemsSold });
+    // Return the total sales
+    res.status(200).json({ totalSales });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
