@@ -45,3 +45,23 @@ exports.getProducts = async (req, res) => {
   }
 };
 
+exports.deleteProduct = async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const vendorId = req.user.id; // Get the vendor ID from the authenticated user
+
+    // Find and delete the product
+    const product = await Product.findOneAndDelete({
+      _id: productId,
+      vendor: vendorId, // Ensure that the product belongs to the vendor
+    });
+
+    if (!product) {
+      return res.status(404).json({ error: "Product not found or unauthorized" });
+    }
+
+    res.status(200).json({ message: "Product deleted successfully" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

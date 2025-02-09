@@ -7,7 +7,7 @@ const Dashboard = () => {
   const [qrCode, setQrCode] = useState("");
   const [vendorId, setVendorId] = useState("");
   const [products, setProducts] = useState([]);
-
+  const [totalSales, setTotalSales] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ const Dashboard = () => {
         );
         setQrCode(qrRes.data.qrCode);
 
-        // Fetch products
+        // Fetch products with items sold
         const productsRes = await axios.get(
           `/api/products/gotomenu?vendorId=${vendorRes.data._id}`,
           {
@@ -48,10 +48,13 @@ const Dashboard = () => {
         setProducts(productsRes.data);
 
         // Fetch total sales
-        
+        const salesRes = await axios.get(`/api/sales/sales?vendor=${vendorRes.data._id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setTotalSales(salesRes.data.totalSales);
       } catch (err) {
         console.error("Error fetching data:", err.response?.data || err);
-        setError("   ");
+        setError("  ");
       } finally {
         setLoading(false);
       }
@@ -59,6 +62,27 @@ const Dashboard = () => {
 
     fetchVendorAndData();
   }, []);
+
+ 
+  /*const handleDeleteProduct = async (productId) => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("No authentication token found");
+  
+      const response = await axios.delete(`/api/products/${productId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+  
+      if (response.status === 200) {
+        setProducts(products.filter((product) => product._id !== productId));
+        alert("Product deleted successfully!");
+      }
+    } catch (err) {
+      console.error("Error deleting product:", err.response?.data || err.message);
+      alert(`Failed to delete product: ${err.response?.data?.error || err.message}`);
+    }
+  };*/
+  
 
   return (
     <div className="dashboard-container">
@@ -74,7 +98,7 @@ const Dashboard = () => {
 
         <h2>Your QR Code</h2>
         {qrCode ? (
-          <div>
+          <div className="qq">
             <img src={qrCode} alt="QR Code" className="qr-code" />
             <p>
               <Link to={`/menu/${vendorId}`}>Click here to view your menu</Link>
@@ -86,13 +110,14 @@ const Dashboard = () => {
           </p>
         )}
 
-        <h2>Products and Sales</h2>
+        <h1>Products and Sales</h1>
         <div className="wrapper">
           <table>
             <thead>
               <tr>
                 <th>Product Name</th>
                 <th>Price</th>
+             
               </tr>
             </thead>
             <tbody>
@@ -100,12 +125,14 @@ const Dashboard = () => {
                 <tr key={product._id}>
                   <td>{product.name}</td>
                   <td>Rs.{product.price}</td>
+                  
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        
+
+        <h3>Total Sales: Rs.{totalSales}</h3>
       </div>
     </div>
   );

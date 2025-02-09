@@ -1,5 +1,5 @@
-// orderController.js
 const Order = require("../models/Order");
+const Product = require("../models/Product");
 
 // Create Order
 exports.createOrder = async (req, res) => {
@@ -17,16 +17,22 @@ exports.createOrder = async (req, res) => {
   }
 
   try {
+    // Create the order
     const order = new Order({
       items,
       totalAmount,
       customerName,
       customerContact,
-      vendor: vendorId, // ✅ Vendor ID from frontend
+      vendor: vendorId,
     });
 
     await order.save();
-    res.status(201).json({ message: "Order placed successfully!", order });
+    
+    // Update itemsSold for each product in the order
+    
+    
+
+    res.status(201).json({ message: "Order placed successfully!", order , itemsSold });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

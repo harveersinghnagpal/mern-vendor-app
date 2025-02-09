@@ -13,14 +13,17 @@ exports.getSales = async (req, res) => {
     // Fetch all orders for the vendor
     const orders = await Order.find({ vendor: vendorId });
 
-    // Calculate total sales
+    // Calculate total sales and total orders
     let totalSales = 0;
+  
     orders.forEach((order) => {
       totalSales += order.totalAmount;
     });
 
-    // Return the total sales
-    res.status(200).json({ totalSales });
+     // Total number of orders
+
+    // Return the total sales and total orders
+    res.status(200).json({ totalSales, totalOrders });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

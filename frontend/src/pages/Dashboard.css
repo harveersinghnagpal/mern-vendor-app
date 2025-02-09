@@ -44,8 +44,17 @@
 .main-content h2 {
   color: #2c3e50;
   margin-bottom: 20px;
+  margin-left: 43%;
+  
 }
-
+.qq img{
+  margin-left: 43%;
+  /* margin: 0px auto; */
+}
+.qq p{
+  margin-left: 42%;
+  /* margin: 0px auto; */
+}
 /* QR Code */
 .qr-code {
   max-width: 200px;
@@ -100,4 +109,18 @@ table tr:hover {
   color: #27ae60;
   font-weight: 600;
   margin-top: 20px;
+}
+
+/* Dashboard.css */
+.delete-btn {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background-color: #ff1a1a;
 }
