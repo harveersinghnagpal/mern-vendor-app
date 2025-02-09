@@ -9,13 +9,13 @@ const path = require("path");
 // Your backend API routes go here, e.g.:
 // app.use("/api", apiRoutes);
 
-// Serve the React app from the "frontend/build" directory
+/*// Serve the React app from the "frontend/build" directory
 app.use(express.static(path.join(__dirname, "../frontend/build")));
 
 // Catch-all route for handling React routing
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend/build", "index.html"));
-});
+});*/
 dotenv.config();
 
 const app = express();

@@ -6,6 +6,6 @@ const router = express.Router();
 
 router.post("/add", authMiddleware, addProduct);  // Add authentication
 router.get("/gotomenu", authMiddleware, getProducts); // Add authentication
-router.delete("/:id", authMiddleware, productController.deleteProduct); // New DELETE route
+// New DELETE route
 
 module.exports = router;

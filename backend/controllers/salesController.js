@@ -23,7 +23,7 @@ exports.getSales = async (req, res) => {
      // Total number of orders
 
     // Return the total sales and total orders
-    res.status(200).json({ totalSales, totalOrders });
+    res.status(200).json({ totalSales });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
