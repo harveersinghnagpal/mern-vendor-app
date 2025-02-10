@@ -26,7 +26,7 @@ const Menu = () => {
           return;
         }
 
-        const response = await axios.get(`/api/products/gotomenu?vendorId=${vendorId}`, {
+        const response = await axios.get(`https://mern-vendor-app.onrender.com/api/products/gotomenu?vendorId=${vendorId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
