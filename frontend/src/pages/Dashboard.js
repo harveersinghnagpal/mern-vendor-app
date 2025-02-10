@@ -23,14 +23,14 @@ const Dashboard = () => {
         if (!token) throw new Error("No authentication token found");
 
         // Fetch vendor details
-        const vendorRes = await axios.get("/api/auth/me", {
+        const vendorRes = await axios.get("https://mern-vendor-app.onrender.com/api/auth/me", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setVendorId(vendorRes.data._id);
 
         // Fetch QR code
         const qrRes = await axios.post(
-          "/api/qr/generate",
+          "https://mern-vendor-app.onrender.com/api/qr/generate",
           {},
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -40,7 +40,7 @@ const Dashboard = () => {
 
         // Fetch products with items sold
         const productsRes = await axios.get(
-          `/api/products/gotomenu?vendorId=${vendorRes.data._id}`,
+          `https://mern-vendor-app.onrender.com/api/products/gotomenu?vendorId=${vendorRes.data._id}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -48,7 +48,7 @@ const Dashboard = () => {
         setProducts(productsRes.data);
 
         // Fetch total sales
-        const salesRes = await axios.get(`/api/sales/sales?vendor=${vendorRes.data._id}`, {
+        const salesRes = await axios.get(`https://mern-vendor-app.onrender.com/api/sales/sales?vendor=${vendorRes.data._id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setTotalSales(salesRes.data.totalSales);
