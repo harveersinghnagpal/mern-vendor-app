@@ -13,7 +13,7 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   // Set base URL for axios
-  axios.defaults.baseURL = "http://localhost:5000";
+  axios.defaults.baseURL = "https://mern-vendor-app.onrender.com";
 
   useEffect(() => {
     const fetchVendorAndData = async () => {
