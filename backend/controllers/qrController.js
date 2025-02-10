@@ -8,7 +8,7 @@ exports.generateQR = async (req, res) => {
     }
 
     const vendorId = req.user.id;
-    const qrCodeData = `http://localhost:3000/menu/${vendorId}`;
+    const qrCodeData = `https://mern-vendor-app-frontend.onrender.com/menu/${vendorId}`;
     const qrCode = await QRCode.toDataURL(qrCodeData);
 
     // Check if QR already exists for vendor
